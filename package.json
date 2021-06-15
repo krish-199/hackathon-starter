@@ -14,6 +14,7 @@
   "scripts": {
     "postinstall": "npm rebuild node-sass",
     "start": "node app.js",
+    "scss": "node-sass — watch css/main.scss -o css/main.css",
     "test": "nyc mocha --timeout=10000 --exit",
     "lint": "eslint \"**/*.js\""
   },
