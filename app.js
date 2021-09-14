@@ -1,6 +1,7 @@
 /**
  * Module dependencies.
  */
+var for_file;
 const express = require('express');
 const compression = require('compression');
 const session = require('express-session');
@@ -16,8 +17,21 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const sass = require('./middleware-saas');
 const multer = require('multer');
+const pyshell = require('python-shell');
+//const upload = multer({ dest: path.join(__dirname, 'uploads') });
+/**
+ * File upload storeage
+ */
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+      cb(null, './uploads');
+   },
+  filename: function (req, file, cb) {
+      cb(null , file.originalname);
+  }
+});
+const upload = multer({ storage: storage })
 
-const upload = multer({ dest: path.join(__dirname, 'uploads') });
 
 
 /**
@@ -88,7 +102,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 app.use((req, res, next) => {
-  if (req.path === '/api/upload') {
+  if (req.path === '/api/upload' | req.path === '/Dashboard') {
     // Multer multipart/form-data handling needs to occur before the Lusca CSRF check.
     next();
   } else {
@@ -126,6 +140,8 @@ app.use('/webfonts', express.static(path.join(__dirname, 'node_modules/@fortawes
 /**
  * Primary app routes.
  */
+
+app.get('/Dashboard', passportConfig.isAuthenticated, homeController.adminLte)
 app.get('/', homeController.index);
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
@@ -240,6 +256,95 @@ app.get('/auth/quickbooks', passport.authorize('quickbooks', { scope: ['com.intu
 app.get('/auth/quickbooks/callback', passport.authorize('quickbooks', { failureRedirect: '/login' }), (req, res) => {
   res.redirect(req.session.returnTo);
 });
+
+/**
+ * File upload route
+ */
+
+app.post('/Dashboard', upload.single('file'), (req, res) =>{
+  console.log("In app.js",req.file);
+  var fileName = req.file.filename;
+  try {
+      //res.send(req.files);
+      //up_file=req.file.path;
+      const options = {
+        args:
+        [
+          //up_file
+          req.file.path
+          //req.query.funds, // starting funds
+          //req.query.size, // (initial) wager size
+          //req.query.count, // wager count — number of wagers per sim
+          //req.query.sims // number of simulations
+        ]
+      }
+      pyshell.PythonShell.run("./py_script/xls_to_xml.py", options, (err, results) => {
+        if (err) res.sendStatus(err);
+        for_file = results.toString();
+        res.setHeader('Content-Disposition', 'attachment; filename=' + fileName);
+        res.setHeader('Content-Transfer-Encoding', 'binary');
+        res.setHeader('Content-Type', 'application/octet-stream');
+        res.download(results.toString(), (err) => {
+          console.log('download callback called', for_file);
+          if( err ) {
+              console.log('something went wrong');
+          }
+        });
+        //res.send(results.toString());
+        console.log(results);
+      });
+  } catch(error) {
+        console.log(error);
+         res.send(400);
+  }
+});
+
+app.get('/fun', passportConfig.isAuthenticated, (req, res) => {
+  console.log(res.filePath);
+  res.download(for_file);
+});
+
+/**
+ * New app.get for running python script
+ */
+/**app.get('/scrip-run', passport.isAuthenticated, (req, res) => {
+  const options = {
+    args:
+    [
+      up_file
+      //req.query.funds, // starting funds
+      //req.query.size, // (initial) wager size
+      //req.query.count, // wager count — number of wagers per sim
+      //req.query.sims // number of simulations
+    ]
+  }
+  pyshell.run("./py_script/xls_to_xml.py", options, (err, data) => {
+    if (err) res.send(err);
+    res.send(data.toString())
+  });
+ });*/
+/**
+ * app.post for running python script
+ */
+/**app.get('/scrip-run', passport.isAuthenticated, (req, res) => {
+    // Error MiddleWare for multer file upload, so if any
+    // error occurs, the image would not be uploaded!
+    upload(req,res, (err) => {
+  
+      if(err) {
+
+          // ERROR occured (here it can be occured due
+          // to uploading image of size greater than
+          // 1MB or uploading different file type)
+          res.send(err)
+      }
+      else {
+
+          // SUCCESS, image successfully uploaded
+          res.send("Success, Image uploaded!")
+      }
+  });
+});*/
 
 /**
  * Error Handler.
