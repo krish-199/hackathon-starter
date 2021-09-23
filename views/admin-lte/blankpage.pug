@@ -1,0 +1,92 @@
+extends base 
+block content 
+	//section.content-header 
+		h1 
+			| Blank Page
+			small it all starts here
+		ol.breadcrumb 
+			li 
+				a(href='#') 
+					i.fa.fa-dashboard
+					| Level 
+			li.active Here 
+	section.content
+		.box
+			.box-header.with-border
+				h3.box-title
+					| Title
+				.box-tools.pull-right
+					button(type='button', data-widget='collapse', data-toggle='tooltip',title='collapse').btn.btn-box-tool
+						i.fa.fa-minus
+					button(type='button', data-widget='remove', data-toggle='tooltip',title='Remove').btn.btn-box-tool
+						i.fa.fa-times
+			.box-body
+				.card
+					.card-header
+						h3.card-title Default Card Example
+						.card-tools
+						// Buttons, labels, and many other things can be placed here!
+						// Here is a label for example
+						span.badge.badge-primary Label
+						// /.card-tools
+					// /.card-header
+					.card-body
+						| The body of the card
+						//button.btn.btn-info.btn-lg(type='button' onclick='clickme()')
+						//form(action='/fileupload' method='post' enctype='multipart/form-data')
+							input(type='file' name='profile')
+							input(type='submit' value='Upload Image' name='submit')
+							  h3 File Upload Form
+						.row
+							.col-md-6
+							form(id ='fileupload', action='/base', role='form', enctype='multipart/form-data', method='POST')
+								.form-group
+								label.col-form-label.font-weight-bold File Input
+								.col-md-6
+									input(type='file', name='profile')
+								button.btn.btn-primary(id='sbutton', type='submit') Submit
+								button.btn.btn-primary(id='dbutton', type='download') File Download
+					.card-footer
+						| The footer of the card
+					// /.card-footer
+					// /.card
+
+			.box-footer
+				| Footer
+	script.
+		function submitRumiForm(e) {
+		e.preventDefault();
+		var formData = new FormData(document.getElementById("fileupload"));
+		var options = {body: formData, method: "POST"}
+		fetch('/base', options).then(function(response) {
+		return response.json();
+		}).then(function(data) {
+		window.open('/base');
+		// have the JSON response from the POST operation here
+		console.log(data);
+		}).catch(function(err) {
+		console.log(err);
+		})
+		}
+		document.getElementById('sbutton').addEventListener("click", submitRumiForm); 
+
+	script.
+		$('#dbutton').on('click', function () {
+			$.ajax({
+				url: '/fun',
+				method: 'GET',
+				xhrFields: {
+					responseType: 'blob'
+				},
+				success: function (data) {
+					var a = document.createElement('a');
+					var url = window.URL.createObjectURL(data);
+					a.href = url;
+					//a.download = 'myfile.pdf';
+					document.body.append(a);
+					a.click();
+					a.remove();
+					window.URL.revokeObjectURL(url);
+				}
+			});
+		});
