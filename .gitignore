@@ -16,6 +16,7 @@ tmp
 # Optional npm cache directory
 .npm
 
+.env
 # scripts files
 py_script
 
