@@ -1,0 +1,486 @@
+extends layout
+block content   
+	// Content Wrapper. Contains page content
+	.content-wrapper
+		// Content Header (Page header)
+		.content-header
+			.container-fluid
+				.row.mb-2
+					.col-sm-6
+						h1.m-0 Dashboard
+					// /.col
+					.col-sm-6
+						ol.breadcrumb.float-sm-right
+							li.breadcrumb-item
+								a(href='#') Home
+							li.breadcrumb-item.active Dashboard
+					// /.col
+					// /.row
+					// /.container-fluid
+					// /.content-header
+					// Main content
+		.content
+			.container-fluid
+				//.row
+					.col
+						.info-box
+							span.info-box-icon.bg-success
+								i.far.fa-thumbs-up
+							.info-box-content
+								span.info-box-text Likes
+								span.info-box-number 41,410
+								.progress
+									.progress-bar(style='width: 70%')
+								span.progress-description
+									| 70% Increase in 30 Days
+					.col
+						.info-box
+							span.info-box-icon.bg-gradient-warning
+								i.far.fa-calendar-alt
+							.info-box-content
+								span.info-box-text Events
+								span.info-box-number 41,410
+								.progress
+									.progress-bar(style='width: 70%')
+								span.progress-description
+									| 70% Increase in 30 Days
+
+					.col
+						.info-box
+							span.info-box-icon.bg-gradient-warning
+								i.far.fa-calendar-alt
+							.info-box-content
+								span.info-box-text Events
+								span.info-box-number 41,410
+								.progress
+									.progress-bar(style='width: 70%')
+								span.progress-description
+									| 70% Increase in 30 Days
+
+
+				.row
+					each titleH, key in {'pink': 'Purchase W/O Inventory'}
+						.col-md-3
+							div(class='card card-' + key)
+								.card-header
+									h.card-title=titleH
+									//.card-tools
+										// This will cause the card to maximize when clicked
+										button.btn.btn-tool(type='button' data-card-widget='maximize')
+											i.fas.fa-expand
+										// This will cause the card to collapse when clicked
+										//button.btn.btn-tool(type='button' data-card-widget='collapse')
+											i.fas.fa-minus
+										// This will cause the card to be removed when clicked
+										//button.btn.btn-tool(type='button' data-card-widget='remove')
+											i.fas.fa-times
+									// /.card-tools
+									// /.card-header
+								.card-body
+									//p.card-text Upload File
+									.row
+										.col
+											p.card-text Select Company:
+											//label(for='customFile') For Upload
+											// Example single danger button
+											.input-group
+												.input-group-prepend
+													button.btn.btn-outline-secondary.btn-sm(type='button' data-toggle="modal" data-target="#createCompModal") Create Company
+												select(id='selectComp-'+ titleH).custom-select.custom-select-sm
+													option(selected='') Choose..
+													each val, index in ['one', 'two', 'three', 'four', 'five']
+														option(value=index) 
+															label=(val)
+									
+									.row
+										.col(style="padding-top: 1em;")
+											p.card-text Select File:
+											//label.form-label(for='customFile') For Upload
+											input(id='fileForm-'+ titleH type='file').form-control.form-control-sm
+									
+									
+									.row
+										.col(style="padding-top: 1em;")
+											button(id='btnup-'+ titleH onclick="btnupload('"+titleH+"')").btn.btn-danger.btn-sm.btn-block
+												i.fa.fa-cogs
+												|&nbsp;&nbsp;Process
+									//br.
+									//.link.text-left
+										a.btn.btn-outline-primary.btn-addon.m-b-10.m-l-5(href='/ExcelProcess/Index?RuleID=2&data=1cshdksdj_259')
+											i.fa.fa-gears
+											|  Try Free
+										|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										button.btn.btn-outline-primary.btn-addon.m-b-10.m-l-5(type='button' onclick="AddToCart(1 , 'Purchase With Inventory')")
+											i.fa.fa-shopping-cart
+											b  Buy 
+									// /.card-body
+								.overlay.dark(id='olStat-'+ titleH hidden=true)
+									.row
+										.col
+											i.fas.fa-2x.fa-sync-alt.fa-spin
+										.col
+											| Processing
+								// light-processing
+							// /.card
+
+					//.col-lg-3
+						.card
+							.card-header(style={background: 'green'})
+								h3.card-title Purchase Voucher
+								.card-tools
+									// This will cause the card to maximize when clicked
+									button.btn.btn-tool(type='button' data-card-widget='maximize')
+										i.fas.fa-expand
+									// This will cause the card to collapse when clicked
+									//button.btn.btn-tool(type='button' data-card-widget='collapse')
+										i.fas.fa-minus
+									// This will cause the card to be removed when clicked
+									//button.btn.btn-tool(type='button' data-card-widget='remove')
+										i.fas.fa-times
+								// /.card-tools
+								// /.card-header
+							.card-body
+								form.md-form
+									.file-field
+										.btn.btn-primary.btn-sm.float-left
+											span Choose file
+											input(type='file')
+										.file-path-wrapper
+											input.file-path.validate(type='text' placeholder='Upload your file')
+
+								// /.card-body
+						// /.card
+				//.row
+					.col-lg-3
+						.card
+							.card-body
+								h5.card-title Card title
+								p.card-text
+									| Some quick example text to build on the card title and make up the bulk of the card's
+									| content.
+								a.card-link(href='#') Card link
+								a.card-link(href='#') Another link
+						.card.card-primary.card-outline
+							.card-body
+								h5.card-title Card title
+								p.card-text
+									| Some quick example text to build on the card title and make up the bulk of the card's
+									| content.
+								a.card-link(href='#') Card link
+								a.card-link(href='#') Another link
+						// /.card
+						// /.col-md-6
+					.col-lg-6
+						.card
+							.card-header
+								h5.m-0 Featured
+							.card-body
+								h6.card-title Special title treatment
+								p.card-text With supporting text below as a natural lead-in to additional content.
+								a.btn.btn-primary(href='#') Go somewhere
+						.card.card-primary.card-outline
+							.card-header
+								h5.m-0 Featured
+							.card-body
+								h6.card-title Special title treatment
+								p.card-text With supporting text below as a natural lead-in to additional content.
+								a.btn.btn-primary(href='#') Go somewhere
+						// /.col-md-6
+						// /.row
+						// /.container-fluid
+						// /.content
+		//#createCompModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='createCompModalLabel' aria-hidden='true')
+			.modal-dialog(role='document')
+				.modal-content
+					.modal-header
+						h5#exampleModalLabel.modal-title Create Company
+						button.close(type='button' data-dismiss='modal' aria-label='Close')
+							span(aria-hidden='true') ×
+					.modal-body
+						.form-group
+							label Enter new Company name:
+							input#newCompname.form-control(type='Text' aria-describedby='newComp' placeholder='Company...')
+							small#emailHelp.form-text.text-muted Will add to list of Companies.
+					.modal-footer
+						button.btn.btn-secondary(type='button' data-dismiss='modal') Close
+						button.btn.btn-primary(type='button') Create Company
+
+	script.
+		function btnupload(titleH){
+			const btnup = document.getElementById("btnup-"+titleH);
+			const btndown = document.getElementById("btndown-"+titleH);
+			const fileForm = document.getElementById('fileForm-'+ titleH).files[0];
+			const selectComp = document.getElementById('selectComp-'+ titleH);
+			const overlayStatus = document.getElementById('olStat-'+ titleH);
+			let formData = new FormData();
+
+			console.log('if loop', selectComp.value);
+			if (selectComp.value === "" || selectComp.value === "Choose.."){
+				console.log('if loop', 'no company selected');
+				$(document).Toasts('create', {
+					class: 'bg-danger',
+					title: 'Toast Title',
+					body: 'No Company Selected.',
+					icon: 'fas fa-exclamation',
+					autohide: true,
+					position: 'topRight',
+					delay: 3000,
+					});
+				return;
+			}
+
+			if (fileForm.length === 0){
+				console.log('if loop', 'no files selected');
+				$(document).Toasts('create', {
+					class: 'bg-danger',
+					title: 'Toast Title',
+					body: 'No File Uploaded.',
+					icon: 'fas fa-exclamation',
+					autohide: true,
+					position: 'topRight',
+					delay: 3000,
+					});
+				return;
+			}
+			console.log("krishna", fileForm, fileForm.name);
+			overlayStatus.hidden = false;
+			formData.append("file", fileForm, fileForm.name);
+			console.log('form data', formData);
+			fetch('/Dashboard', {method: 'POST', body: formData})
+				.then(
+					res => res.blob()
+				)
+				.then(
+					blob => {
+						setTimeout(()=>{
+							overlayStatus.hidden = true;
+
+							const url = window.URL.createObjectURL(blob);
+							const a = document.createElement('a');
+							a.style.display = 'none';
+							a.href = url;
+							// the filename you want
+							a.download = fileForm.name + '.xml';
+							document.body.appendChild(a);
+							a.click();
+							window.URL.revokeObjectURL(url);
+							//alert('your file has downloaded!');
+							$(document).Toasts('create', {
+								class: 'bg-success',
+								title: 'Toast Title',
+								body: 'File has been Downloaded',
+								icon: 'fas fa-tick',
+								autohide: true,
+								position: 'topRight',
+								delay: 3000,
+								});
+						}, 2000);
+					}
+				);	
+
+
+		}
+	
+	//script.
+		$('#btnxml').click(function () {
+			$.ajax({
+				async: true,
+				url: '/ExcelProcess/FormatXML', //TestXML
+				contentType: false, // Not to set any content header
+				processData: false, // Not to process data
+				success: function (result) {
+					$("#XMLPre").text(result.XmlData);
+				}
+			});
+		});
+
+
+
+		$('#btnUpload').click(function (e) {
+
+			if ($('#UploadControl').get(0).files.length === 0) {
+				console.log("No files selected.");
+				$(document).Toasts('create', {
+					class: 'bg-info',
+					title: 'Toast Title',
+					body: 'No files selected.',
+					icon: 'fas fa-exclamation',
+					})
+				return;
+			}
+
+			if ($("#Rule").val() == null || $("#Rule").val() == "") {
+				$("[data-valmsg-for='Rule']").text(" Required");
+				SnackbarMessage("Please select Product");
+				//e.preventDefault();
+				return;
+			}
+			$("[data-valmsg-for='Rule']").text("");
+
+			if ($("#Company").val() == null || $("#Company").val() == "") {
+				$("[data-valmsg-for='Company']").text(" Required");
+				SnackbarMessage("Please select Company");
+				//e.preventDefault();
+				return;
+			}
+			$("[data-valmsg-for='Company']").text("");
+
+			//$(this).css("display","none");
+			$(this).prop('disabled', true);
+			$(this).text('Uploading... please wait');
+			//$(this).text('Uploading... please wait');
+			$("#progressBar").css("display", '');
+
+			if (window.FormData !== undefined) {
+				var fileUpload = $("#UploadControl").get(0);
+				var files = fileUpload.files;
+				var fileData = new FormData();
+				for (var i = 0; i < files.length; i++) {
+					fileData.append(files[i].name, files[i]);
+					//console.log('fileData : ', fileData);
+				}
+				//fileData.append('username', 'Manas');
+				fileData.append('RuleID', $("#Rule").val());
+				fileData.append('CompanyID', $("#Company").val());
+				fileData.append('MasterFlag', $('#masterFlag')[0].checked);
+
+
+				$.ajax({
+					async: true,
+					url: '/ExcelProcess/FileUpload',
+					type: "POST",
+					contentType: false, // Not to set any content header
+					processData: false, // Not to process data
+					data: fileData,
+					success: function (result) {
+						// alert("success : " + result);
+
+						$("#WaitModal1").modal('hide');
+						//console.log(result);
+
+						//------ Reset -------------
+						$("#btnUpload").text('Process Excel Records');
+						$("#btnUpload").prop('disabled', false);
+						// $("#btnUpload").css("display", "");
+
+						$("#progressBar").css("display", 'none');
+						$("#p1").css("width", '0%');
+						$("#p1").text('');
+						document.getElementById("UploadControl").value = "";
+
+					// SnackbarMessage(result.Message)
+
+
+						if (result.status != 'ok') {
+							$("#UploadErrorMessage").text(result.Message);
+							$("#UploadErrorMessage").css('display', 'block');
+
+						}
+
+						if (result.status == 'ok') {
+							//window.location.href = "/Benchmark/Edit/" + result.ScenarioID;
+
+
+							SnackbarMessage(result.Message + "    Start downloading...")
+
+						// $("#XMLPre").text(result.XmlData);
+							// Start downloading..
+							location.href = '/ExcelProcess/DownloadXML?DownloadID=' + result.XmlData ;
+
+
+							//// Refresh the scenario List
+							//$.post("/Benchmark/getScenarioList", function (result) {
+							//    $("#ScnarioTableid").html(result);
+							//});
+
+						}
+						else if (result.status == 'validation') {
+							console.log("ErrorList : ", result.ErrorList);
+							var vtable = "<table><tr><td class='text-left'><b>Row Number             Error Description </b></td></tr>";
+							for (i = 0; i < result.ErrorList.length; i++) {
+								vtable += "<tr> <td class='text-left'>";
+								vtable += result.ErrorList[i];
+								//console.log("Error line  : ", result.ErrorList[i]);
+								vtable += " </td></tr>";
+							}
+
+							vtable += "</table>";
+							//console.log("html  : ", vtable);
+							$("#ValidationList").html(vtable);
+
+
+						}
+						else if (result.status == 'ex_dummyCode') {
+							alert('Error : Dummy Code is not supported in this version. \n\nFollowing Code(s) missing in Product Portfolio : \n\n' + result.productNo);
+						}
+						else if (result.status == 'ex_fileAlreadyPresent') {
+							var rval = confirm('This proposal already exists. Do you want to overwrite?');
+							if (rval == true) {
+								$.post("/Benchmark/UploadFiles", { FileOverriding: result.LastFullFilePath }, function (data1) {
+									//console.log(data1)
+									SnackbarMessage(data1.Message)
+									if (data1.status == 'ok') {
+										$("#UploadErrorMessage").css('display', 'none');
+										//console.log(data1);
+
+										// window.location.href = "/Benchmark/Edit/" + data1.ScenarioID;
+										SnackbarMessage(data1.Message)
+
+										//// Refresh the scenario List
+										//$.post("/Benchmark/getScenarioList", function (result) {
+										//    $("#ScnarioTableid").html(result);
+										//});
+									}
+									else {
+										$("#UploadErrorMessage").text(result.Message);
+										$("#UploadErrorMessage").css('display', 'inline');
+									}
+								});
+							}
+						}
+
+						return false;
+
+						// $.wait(function () { $("#ScnarioTableid").load("/Scenario/getScenarioList") }, 1);
+
+						//console.log("Loading done" + files);
+
+					},
+					xhr: function () {
+						// get the native XmlHttpRequest object
+						var xhr = $.ajaxSettings.xhr();
+						// set the onprogress event handler
+						xhr.upload.onprogress = function (evt) {
+							//console.log('progress', evt.loaded / evt.total * 100);
+							//$("#myProgressBar").attr('value', evt.loaded / evt.total * 100);
+							var v1 = Math.round(evt.loaded / evt.total * 100);
+							$("#p1").css("width", v1 + '%');
+							if (v1 == 100) {
+								$("#p1").text('Processing Excel File...');
+								console.log('show popup');
+								$("#WaitModal1").modal('show');
+							}
+
+							else
+								$("#p1").text(v1 + '%');
+						};
+						// set the onload event handler
+						xhr.upload.onload = function () { console.log('DONE!') };
+						// return the customized object
+						return xhr;
+					},
+					error: function (err) {
+						$("#WaitModal1").modal('hide');
+						//------ Reset -------------
+						$("#btnUpload").text('Process Excel Records');
+						$("#btnUpload").prop('disabled', false);
+
+						alert("Server is not responding : " + err.statusText);
+					}
+
+				});
+			}
+
+		});
+
+
