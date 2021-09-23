@@ -1,0 +1,46 @@
+extends layout
+block content
+    .content-wrapper
+        // Content Header (Page header)
+        section.content-header
+            .container-fluid
+                .row.mb-2
+                    .col-sm-6
+                        h1 Contact us
+                    .col-sm-6
+                        ol.breadcrumb.float-sm-right
+                            li.breadcrumb-item
+                                a(href='#') Home
+                            li.breadcrumb-item.active Contact us
+            // /.container-fluid
+            // Main content
+            section.content
+                // Default box
+                .card
+                    .card-body.row
+                        .col-5.text-center.d-flex.align-items-center.justify-content-center
+                            div
+                                h2
+                                    | Admin
+                                    strong LTE
+                                p.lead.mb-5
+                                    | 123 Testing Ave, Testtown, 9876 NA
+                                    br
+                                    |                 Phone: +1 234 56789012
+                        .col-7
+                            .form-group
+                                label(for='inputName') Name
+                                input#inputName.form-control(type='text')
+                            .form-group
+                                label(for='inputEmail') E-Mail
+                                input#inputEmail.form-control(type='email')
+                            .form-group
+                                label(for='inputSubject') Subject
+                                input#inputSubject.form-control(type='text')
+                            .form-group
+                                label(for='inputMessage') Message
+                                textarea#inputMessage.form-control(rows='4')
+                            .form-group
+                                input.btn.btn-primary(type='submit' value='Send message')
+            // /.content
+    // /.content-wrapper
