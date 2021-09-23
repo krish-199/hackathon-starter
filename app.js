@@ -15,9 +15,8 @@ const flash = require('express-flash');
 const path = require('path');
 const mongoose = require('mongoose');
 const passport = require('passport');
-const sass = require('./middleware-saas');
 const multer = require('multer');
-const pyshell = require('python-shell');
+//const pyshell = require('python-shell');
 //const upload = multer({ dest: path.join(__dirname, 'uploads') });
 /**
  * File upload storeage
@@ -261,48 +260,44 @@ app.get('/auth/quickbooks/callback', passport.authorize('quickbooks', { failureR
  * File upload route
  */
 
-app.post('/Dashboard', upload.single('file'), (req, res) =>{
-  console.log("In app.js",req.file);
-  var fileName = req.file.filename;
-  try {
-      //res.send(req.files);
-      //up_file=req.file.path;
-      const options = {
-        args:
-        [
-          //up_file
-          req.file.path
-          //req.query.funds, // starting funds
-          //req.query.size, // (initial) wager size
-          //req.query.count, // wager count — number of wagers per sim
-          //req.query.sims // number of simulations
-        ]
-      }
-      pyshell.PythonShell.run("./py_script/xls_to_xml.py", options, (err, results) => {
-        if (err) res.sendStatus(err);
-        for_file = results.toString();
-        res.setHeader('Content-Disposition', 'attachment; filename=' + fileName);
-        res.setHeader('Content-Transfer-Encoding', 'binary');
-        res.setHeader('Content-Type', 'application/octet-stream');
-        res.download(results.toString(), (err) => {
-          console.log('download callback called', for_file);
-          if( err ) {
-              console.log('something went wrong');
-          }
-        });
-        //res.send(results.toString());
-        console.log(results);
-      });
-  } catch(error) {
-        console.log(error);
-         res.send(400);
-  }
-});
+// app.post('/Dashboard', upload.single('file'), (req, res) =>{
+//   console.log("In app.js",req.file);
+//   var fileName = req.file.filename;
+//   try {
+//       //res.send(req.files);
+//       //up_file=req.file.path;
+//       const options = {
+//         args:
+//         [
+//           //up_file
+//           req.file.path
+//           //req.query.funds, // starting funds
+//           //req.query.size, // (initial) wager size
+//           //req.query.count, // wager count — number of wagers per sim
+//           //req.query.sims // number of simulations
+//         ]
+//       }
+//       pyshell.PythonShell.run("./py_script/xls_to_xml.py", options, (err, results) => {
+//         if (err) res.sendStatus(err);
+//         for_file = results.toString();
+//         res.setHeader('Content-Disposition', 'attachment; filename=' + fileName);
+//         res.setHeader('Content-Transfer-Encoding', 'binary');
+//         res.setHeader('Content-Type', 'application/octet-stream');
+//         res.download(results.toString(), (err) => {
+//           console.log('download callback called', for_file);
+//           if( err ) {
+//               console.log('something went wrong');
+//           }
+//         });
+//         //res.send(results.toString());
+//         console.log(results);
+//       });
+//   } catch(error) {
+//         console.log(error);
+//          res.send(400);
+//   }
+// });
 
-app.get('/fun', passportConfig.isAuthenticated, (req, res) => {
-  console.log(res.filePath);
-  res.download(for_file);
-});
 
 /**
  * New app.get for running python script
